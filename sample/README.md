@@ -1,6 +1,8 @@
-sample
+#sample
+googletestをインストールしないで使用する。  
+テスト対象コードはC言語。
 
-# ディレクトリ構成
+## ディレクトリ構成
 
 <pre>
 $ tree sample/
