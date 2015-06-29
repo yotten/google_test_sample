@@ -5,16 +5,14 @@ googletestをインストールしないで使用する。
 ## ディレクトリ構成
 
 <pre>
-$ tree sample/
+$(HOME)/src/tools/gtest-1.7.0　←　ダウンロード
+
 sample/
-├── Makefile　　　　※ 自作。改良の余地あり。
+├── Makefile
 ├── README.md
-├── sample.c　　　　※テスト対象コード
+├── diff.txt
+├── diff2.txt
+├── sample.c
 ├── sample.h
-├── sampleTest.c　　※ テストコード(本来はtest配下に置きたい。)
-└── test
-    └── gtest
-        ├── gtest-all.cc
-        ├── gtest.h
-        └── gtest_main.cc
+└── sampleTest.c
 </pre>
