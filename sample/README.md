@@ -1,20 +1,15 @@
 #sample
-googletestをインストールしないで使用する。  
 テスト対象コードはC言語。
 
 ## ディレクトリ構成
 
 <pre>
-$ tree sample/
+$(HOME)/src/tools/gtest-1.7.0　←　ダウンロード
+
 sample/
-├── Makefile　　　　※ 自作。改良の余地あり。
+├── Makefile
 ├── README.md
-├── sample.c　　　　※テスト対象コード
+├── sample.c　　　←テスト対象コード
 ├── sample.h
-├── sampleTest.c　　※ テストコード(本来はtest配下に置きたい。)
-└── test
-    └── gtest
-        ├── gtest-all.cc
-        ├── gtest.h
-        └── gtest_main.cc
+└── sampleTest.c　←テストコード
 </pre>
