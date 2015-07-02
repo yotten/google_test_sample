@@ -43,7 +43,7 @@ CC = gcc
 all : $(TESTS)
 
 clean :
-	rm -f $(TESTS) gtest.a gtest_main.a *.o
+	rm -f $(TESTS) gtest.a gtest_main.a *.o mocks/*.o
 
 # Builds gtest.a and gtest_main.a.
 
@@ -72,16 +72,19 @@ gtest_main.a : gtest-all.o gtest_main.o
 # Builds a sample test.  A test should link with either gtest.a or
 # gtest_main.a, depending on whether it defines its own main()
 # function.
-LedDriver.o : LedDriver.c LedDriver.h
-	$(CC) -I./LedDriver.h $(CXXFLAGS) -c LedDriver.c
+LedDriver.o : LedDriver.c LedDriver.h RuntimeError.h
+	$(CC) -I./ $(CXXFLAGS) -c LedDriver.c
 
-LedDriverTest.o : test/LedDriverTest.cpp LedDriver.h $(GTEST_HEADERS)
+LedDriverTest.o : test/LedDriverTest.cpp $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c test/LedDriverTest.cpp
 
+RuntimeErrorStub.o : mocks/RuntimeErrorStub.c mocks/RuntimeErrorStub.h
+	$(CC) -I./mocks/ $(CXXFLAGS) -c mocks/RuntimeErrorStub.c
+ 
 # Builds a sample test.  A test should link with either gtest.a or
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-$(TESTS) : LedDriver.o LedDriverTest.o gtest_main.a
+$(TESTS) : LedDriver.o LedDriverTest.o RuntimeErrorStub.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 

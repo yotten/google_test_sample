@@ -3,6 +3,8 @@
 extern "C"
 {
 #include "../LedDriver.h"
+#include "../RuntimeError.h"
+#include "../mocks/RuntimeErrorStub.h" 
 }
 
 static uint16_t virtualLeds;
@@ -65,10 +67,37 @@ TEST_F(LedDriver, LedMemoryIsNotReadable)
 	LedDriver_TurnOn(8);
 	ASSERT_EQ(0x80, virtualLeds);
 }
-//TEST(MinTest, test1) { ASSERT_EQ(min(1, 2), 1); }
-//TEST(MinTest, test2) { ASSERT_EQ(min(1, 1), 1); }
-//TEST(MinTest, test3) { ASSERT_EQ(min(1, 0), 0); }
-//TEST(MaxTest, test1) { ASSERT_EQ(max(1, 2), 2); }
-//TEST(MaxTest, test2) { ASSERT_EQ(max(1, 1), 1); }
-//TEST(MaxTest, test3) { ASSERT_EQ(max(1, 0), 1); }
+
+TEST_F(LedDriver, UpperAndLowerBounds)
+{
+	LedDriver_TurnOn(1);
+	LedDriver_TurnOn(16);
+	ASSERT_EQ(0x8001, virtualLeds);	
+}
+
+TEST_F(LedDriver, OutOfBoundsChangesNothing)
+{
+	LedDriver_TurnOn(-1);
+	LedDriver_TurnOn(0);
+	LedDriver_TurnOn(17);
+	LedDriver_TurnOn(3141);
+	ASSERT_EQ(0, virtualLeds);	
+}
+
+TEST_F(LedDriver, OutOfBoundsTurnOffDoesNoHarm)
+{
+	LedDriver_TurnAllOn();
+        LedDriver_TurnOff(-1);
+        LedDriver_TurnOff(0);
+        LedDriver_TurnOff(17);
+        LedDriver_TurnOff(3141);
+        ASSERT_EQ(0xffff, virtualLeds);
+}
+
+TEST_F(LedDriver, OutOfBoundsProducesRuntimeError)
+{
+	LedDriver_TurnOn(-1);
+	ASSERT_STREQ("LedDriver: out-of-bounds LED", RuntimeErrorStub_GetLastError());
+	ASSERT_EQ(-1, RuntimeErrorStub_GetLastParameter());
+}
 
