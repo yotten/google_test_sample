@@ -20,6 +20,7 @@ protected:
 	}
 };
 
+class DISABLED_LedDriver : public :: testing :: Test {};
 TEST_F(LedDriver, LedsOffAfterCreate)
 {
 	uint16_t virtualLeds = 0xffff;
@@ -101,3 +102,7 @@ TEST_F(LedDriver, OutOfBoundsProducesRuntimeError)
 	ASSERT_EQ(-1, RuntimeErrorStub_GetLastParameter());
 }
 
+TEST_F(DISABLED_LedDriver, OutOfBoundsToDo)
+{
+	/* TODO */
+}
