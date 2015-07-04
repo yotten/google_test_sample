@@ -106,3 +106,41 @@ TEST_F(DISABLED_LedDriver, OutOfBoundsToDo)
 {
 	/* TODO */
 }
+
+TEST_F(LedDriver, IsOn)
+{
+	ASSERT_FALSE(LedDriver_IsOn(11));
+	LedDriver_TurnOn(11);
+	ASSERT_TRUE(LedDriver_IsOn(11));
+}
+
+TEST_F(LedDriver, OutOfBoundsLedsAreAlwaysOff)
+{
+	ASSERT_FALSE(LedDriver_IsOn(0));
+	ASSERT_FALSE(LedDriver_IsOn(17));
+	ASSERT_TRUE(LedDriver_IsOff(0));
+	ASSERT_TRUE(LedDriver_IsOff(17));
+}
+
+TEST_F(LedDriver, IsOff)
+{
+	ASSERT_TRUE(LedDriver_IsOff(12));
+	LedDriver_TurnOn(12);
+	ASSERT_FALSE(LedDriver_IsOff(12));
+}
+
+TEST_F(LedDriver, TurnOffMultipleLeds)
+{
+	LedDriver_TurnAllOn();
+	LedDriver_TurnOff(9);
+	LedDriver_TurnOff(8);
+	ASSERT_EQ((~0x180)&0xffff, virtualLeds);	
+}
+
+TEST_F(LedDriver, AllOff)
+{
+	LedDriver_TurnAllOn();
+	LedDriver_TurnAllOff();
+	ASSERT_EQ(0, virtualLeds);	
+}
+
